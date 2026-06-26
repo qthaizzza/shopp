@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShoeShop – 4 Trang Giao Diện</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f0f0; color: #222; }
+
+  /* ===== NAV ===== */
+  .navbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 32px; background: #fff; border-bottom: 1px solid #e8e8e8;
+  }
+  .nav-logo { font-size: 20px; font-weight: 800; color: #111; }
+  .nav-logo span { color: #1a1aff; }
+  .nav-links { display: flex; gap: 24px; list-style: none; }
+  .nav-links a { text-decoration: none; color: #444; font-size: 14px; }
+  .nav-links a:hover { color: #111; }
+  .nav-icons { display: flex; gap: 16px; align-items: center; }
+  .nav-icons svg { width: 20px; height: 20px; color: #444; cursor: pointer; }
+  .cart-badge { position: relative; }
+  .badge {
+    position: absolute; top: -6px; right: -6px;
+    background: #e53e3e; color: #fff; font-size: 10px;
+    width: 16px; height: 16px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-weight: 700;
+  }
+
+  /* ===== PAGE WRAPPER ===== */
+  .page { display: none; background: #fff; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ===== TAB NAV ===== */
+  .tab-nav {
+    display: flex; gap: 0; background: #1a1aff; padding: 0 32px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .tab-btn {
+    padding: 12px 20px; color: rgba(255,255,255,0.7); font-size: 13px;
+    cursor: pointer; border: none; background: none; font-weight: 500;
+    border-bottom: 3px solid transparent; transition: all .2s;
+  }
+  .tab-btn.active, .tab-btn:hover { color: #fff; border-bottom-color: #fff; }
+
+  /* ===== PAGE 1: PRODUCT DETAIL ===== */
+  .breadcrumb { padding: 12px 32px; font-size: 13px; color: #888; }
+  .breadcrumb a { color: #888; text-decoration: none; }
+  .breadcrumb span { color: #444; }
+
+  .product-layout { display: flex; gap: 40px; padding: 16px 32px 40px; }
+
+  .thumb-col { display: flex; flex-direction: column; gap: 8px; }
+  .thumb {
+    width: 72px; height: 72px; border: 1.5px solid #e0e0e0; border-radius: 8px;
+    overflow: hidden; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    background: #f8f8f8;
+  }
+  .thumb.active { border-color: #1a1aff; }
+  .thumb img { width: 90%; object-fit: contain; }
+
+  .main-img {
+    flex: 1; max-width: 420px; border: 1.5px solid #e0e0e0; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; background: #f8f8f8;
+    min-height: 340px; position: relative;
+  }
+  .main-img img { width: 85%; object-fit: contain; }
+  .zoom-icon {
+    position: absolute; bottom: 12px; right: 12px;
+    background: #fff; border: 1px solid #ddd; border-radius: 6px;
+    padding: 6px; cursor: pointer;
+  }
+
+  .product-info { flex: 1; }
+  .product-info h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .stars { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+  .star { color: #f5a623; font-size: 16px; }
+  .review-count { font-size: 13px; color: #888; }
+  .price-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .price-new { font-size: 26px; font-weight: 700; color: #e53e3e; }
+  .price-old { font-size: 16px; color: #aaa; text-decoration: line-through; }
+  .discount-badge {
+    background: #e53e3e; color: #fff; font-size: 12px;
+    padding: 2px 8px; border-radius: 4px; font-weight: 600;
+  }
+
+  .section-label { font-size: 13px; font-weight: 600; margin-bottom: 6px; margin-top: 14px; }
+  .desc-text { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 14px; }
+
+  .color-options { display: flex; gap: 10px; margin-bottom: 14px; }
+  .color-dot {
+    width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+    border: 2px solid transparent;
+  }
+  .color-dot.active { border-color: #1a1aff; box-shadow: 0 0 0 2px #fff inset; }
+
+  .size-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .size-btn {
+    width: 44px; height: 36px; border: 1.5px solid #ddd; border-radius: 6px;
+    background: #fff; font-size: 13px; cursor: pointer; font-weight: 500;
+    transition: all .15s;
+  }
+  .size-btn:hover { border-color: #1a1aff; color: #1a1aff; }
+  .size-btn.active { background: #1a1aff; color: #fff; border-color: #1a1aff; }
+
+  .qty-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .qty-ctrl {
+    display: flex; align-items: center; border: 1.5px solid #ddd; border-radius: 8px; overflow: hidden;
+  }
+  .qty-btn {
+    width: 36px; height: 36px; border: none; background: #f5f5f5;
+    font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .qty-val { width: 40px; text-align: center; font-size: 15px; font-weight: 600; }
+
+  .btn-cart {
+    flex: 1; background: #111; color: #fff; border: none; border-radius: 8px;
+    padding: 12px 0; font-size: 14px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: .5px;
+  }
+  .btn-wishlist {
+    width: 44px; height: 44px; border: 1.5px solid #ddd; border-radius: 8px;
+    background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+
+  .perks { display: flex; gap: 0; border-top: 1px solid #f0f0f0; margin-top: 24px; padding-top: 20px; }
+  .perk { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+  .perk-icon { font-size: 22px; }
+  .perk-text { font-size: 11px; color: #666; line-height: 1.4; }
+
+  /* ===== PAGE 2: REGISTER ===== */
+  .auth-layout { display: flex; min-height: calc(100vh - 57px); }
+  .auth-img {
+    flex: 1; background: linear-gradient(135deg, #dde8f5 0%, #b8cfe8 100%);
+    display: flex; align-items: center; justify-content: center; min-height: 500px;
+    position: relative; overflow: hidden;
+  }
+  .auth-img-inner {
+    width: 70%; text-align: center;
+  }
+  .auth-img svg { width: 80%; opacity: .85; }
+  .shoe-placeholder {
+    width: 280px; height: 280px;
+    background: linear-gradient(135deg, #c5d8ed, #a8c4de);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 80px; margin: 0 auto;
+  }
+
+  .auth-form-col {
+    width: 420px; padding: 60px 48px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .auth-form-col h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .auth-form-col .subtitle { font-size: 13px; color: #888; margin-bottom: 28px; }
+
+  .form-group { margin-bottom: 14px; position: relative; }
+  .form-group input {
+    width: 100%; padding: 12px 14px 12px 40px;
+    border: 1.5px solid #e0e0e0; border-radius: 8px;
+    font-size: 13px; color: #333; outline: none; transition: border .2s;
+  }
+  .form-group input:focus { border-color: #1a1aff; }
+  .form-group input::placeholder { color: #bbb; }
+  .form-icon {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: #bbb; font-size: 15px;
+  }
+  .form-eye {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    color: #bbb; cursor: pointer; font-size: 15px;
+  }
+
+  .btn-primary {
+    width: 100%; padding: 13px; background: #111; color: #fff;
+    border: none; border-radius: 8px; font-size: 14px; font-weight: 700;
+    cursor: pointer; letter-spacing: .5px; margin-top: 4px;
+  }
+  .btn-primary:hover { background: #1a1aff; }
+
+  .auth-switch { text-align: center; font-size: 13px; color: #888; margin-top: 16px; }
+  .auth-switch a { color: #1a1aff; text-decoration: none; font-weight: 600; }
+
+  /* ===== PAGE 3: LOGIN ===== */
+  .social-divider {
+    text-align: center; font-size: 13px; color: #aaa; margin: 20px 0 16px;
+    position: relative;
+  }
+  .social-divider::before, .social-divider::after {
+    content: ''; position: absolute; top: 50%; width: 38%; height: 1px; background: #e0e0e0;
+  }
+  .social-divider::before { left: 0; }
+  .social-divider::after { right: 0; }
+
+  .social-btns { display: flex; gap: 12px; }
+  .btn-social {
+    flex: 1; padding: 10px; border: 1.5px solid #e0e0e0; border-radius: 8px;
+    background: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background .15s;
+  }
+  .btn-social:hover { background: #f5f5f5; }
+  .google-g { color: #ea4335; font-weight: 800; }
+  .fb-f { color: #1877f2; font-weight: 800; }
+
+  .remember-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .remember-row label { font-size: 13px; color: #555; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .remember-row a { font-size: 13px; color: #1a1aff; text-decoration: none; }
+
+  /* ===== PAGE 4: ORDERS ===== */
+  .orders-layout { display: flex; min-height: calc(100vh - 57px); }
+  .sidebar {
+    width: 220px; border-right: 1px solid #f0f0f0; padding: 24px 0;
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 24px; font-size: 14px; color: #555; cursor: pointer;
+    transition: background .15s;
+  }
+  .sidebar-item:hover { background: #f5f5f5; }
+  .sidebar-item.active { background: #eff2ff; color: #1a1aff; font-weight: 600; border-left: 3px solid #1a1aff; }
+  .sidebar-icon { font-size: 17px; }
+
+  .orders-main { flex: 1; padding: 28px 32px; }
+  .orders-main h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+
+  .order-tabs { display: flex; gap: 0; border-bottom: 2px solid #f0f0f0; margin-bottom: 24px; }
+  .order-tab {
+    padding: 10px 20px; font-size: 14px; color: #888; cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -2px; font-weight: 500;
+  }
+  .order-tab.active { color: #1a1aff; border-bottom-color: #1a1aff; font-weight: 600; }
+
+  .order-card {
+    border: 1.5px solid #f0f0f0; border-radius: 10px; padding: 16px 20px;
+    margin-bottom: 16px;
+  }
+  .order-header { display: flex; justify-content: space-between; margin-bottom: 12px; align-items: center; }
+  .order-id { font-size: 13px; font-weight: 600; color: #333; }
+  .order-date { font-size: 12px; color: #aaa; }
+  .status-badge {
+    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+  }
+  .status-shipping { background: #fff3cd; color: #d97706; }
+  .status-done { background: #d1fae5; color: #059669; }
+  .status-cancel { background: #fee2e2; color: #e53e3e; }
+
+  .order-item-row { display: flex; align-items: center; gap: 14px; }
+  .order-shoe-img {
+    width: 64px; height: 64px; background: #f5f5f5; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-size: 28px;
+    flex-shrink: 0;
+  }
+  .order-item-info { flex: 1; }
+  .order-item-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .order-item-variant { font-size: 12px; color: #888; }
+  .order-item-price { font-size: 13px; color: #aaa; margin-right: 8px; }
+  .order-qty { font-size: 13px; color: #888; margin-right: 12px; }
+  .order-total { font-size: 14px; font-weight: 700; color: #111; margin-right: 14px; }
+  .btn-detail {
+    padding: 8px 16px; border: 1.5px solid #e0e0e0; border-radius: 6px;
+    background: #fff; font-size: 13px; cursor: pointer; font-weight: 500;
+    white-space: nowrap;
+  }
+  .btn-detail:hover { border-color: #1a1aff; color: #1a1aff; }
+</style>
+</head>
+<body>
+
+<!-- TAB NAVIGATION -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showPage(0)">① Chi tiết sản phẩm</button>
+  <button class="tab-btn" onclick="showPage(1)">② Đăng ký tài khoản</button>
+  <button class="tab-btn" onclick="showPage(2)">③ Đăng nhập</button>
+  <button class="tab-btn" onclick="showPage(3)">④ Quản lý đơn hàng</button>
+</div>
+
+<!-- ===================== PAGE 1: PRODUCT DETAIL ===================== -->
+<div class="page active" id="page-0">
+  <nav class="navbar">
+    <div class="nav-logo">Shoe<span>Shop</span></div>
+    <ul class="nav-links">
+      <li><a href="#">Trang chủ</a></li>
+      <li><a href="#">Sản phẩm</a></li>
+      <li><a href="#">Nam</a></li>
+      <li><a href="#">Nữ</a></li>
+      <li><a href="#">Phụ kiện</a></li>
+      <li><a href="#">Khuyến mãi</a></li>
+    </ul>
+    <div class="nav-icons">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <div class="cart-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <div class="badge">2</div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="#">Trang chủ</a> &rsaquo; <a href="#">Nam</a> &rsaquo; <span>Nike Air Force 1 '07</span>
+  </div>
+
+  <div class="product-layout">
+    <!-- Thumbnails -->
+    <div class="thumb-col">
+      <div class="thumb active"><div style="font-size:32px">👟</div></div>
+      <div class="thumb"><div style="font-size:32px">👟</div></div>
+      <div class="thumb"><div style="font-size:32px">👟</div></div>
+      <div class="thumb"><div style="font-size:32px">👟</div></div>
+    </div>
+    <!-- Main image -->
+    <div class="main-img">
+      <div style="font-size:120px; filter: drop-shadow(4px 8px 12px rgba(0,0,0,.15))">👟</div>
+      <div class="zoom-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      </div>
+    </div>
+    <!-- Info -->
+    <div class="product-info">
+      <h1>Nike Air Force 1 '07</h1>
+      <div class="stars">
+        <span class="star">★★★★</span><span style="color:#ddd; font-size:16px">★</span>
+        <span class="review-count">(128 đánh giá)</span>
+      </div>
+      <div class="price-row">
+        <span class="price-new">2.490.000đ</span>
+        <span class="price-old">2.890.000đ</span>
+        <span class="discount-badge">-17%</span>
+      </div>
+      <div class="section-label">Mô tả sản phẩm</div>
+      <p class="desc-text">Thiết kế kinh điển, dễ phối đồ, phù hợp mọi phong cách.<br>Chất liệu cao cấp, êm ái và bền bỉ.</p>
+
+      <div class="section-label">Màu sắc</div>
+      <div class="color-options">
+        <div class="color-dot active" style="background:#fff; border: 1.5px solid #ccc;"></div>
+        <div class="color-dot" style="background:#111;"></div>
+      </div>
+
+      <div class="section-label">Kích thước</div>
+      <div class="size-options">
+        <button class="size-btn">38</button>
+        <button class="size-btn">39</button>
+        <button class="size-btn active">40</button>
+        <button class="size-btn">41</button>
+        <button class="size-btn">42</button>
+        <button class="size-btn">43</button>
+      </div>
+
+      <div class="section-label">Số lượng</div>
+      <div class="qty-row">
+        <div class="qty-ctrl">
+          <button class="qty-btn">−</button>
+          <div class="qty-val">1</div>
+          <button class="qty-btn">+</button>
+        </div>
+        <button class="btn-cart">
+          🛒 THÊM VÀO GIỎ HÀNG
+        </button>
+        <button class="btn-wishlist">♡</button>
+      </div>
+
+      <div class="perks">
+        <div class="perk">
+          <div class="perk-icon">🚚</div>
+          <div class="perk-text">Miễn phí giao hàng<br>đơn từ 500k</div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">🔄</div>
+          <div class="perk-text">Đổi trả dễ dàng<br>trong 7 ngày</div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">✅</div>
+          <div class="perk-text">Sản phẩm chính hàng<br>100%</div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">🔒</div>
+          <div class="perk-text">Thanh toán an toàn<br>bảo mật</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 2: REGISTER ===================== -->
+<div class="page" id="page-1">
+  <nav class="navbar">
+    <div class="nav-logo">Shoe<span>Shop</span></div>
+    <div class="nav-icons">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <div class="cart-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <div class="badge">2</div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="auth-layout">
+    <div class="auth-img">
+      <div class="shoe-placeholder">👟</div>
+    </div>
+    <div class="auth-form-col">
+      <h2>Đăng ký tài khoản</h2>
+      <p class="subtitle">Tạo tài khoản để trải nghiệm mua sắm tốt hơn</p>
+
+      <div class="form-group">
+        <span class="form-icon">👤</span>
+        <input type="text" placeholder="Họ và tên">
+      </div>
+      <div class="form-group">
+        <span class="form-icon">✉️</span>
+        <input type="email" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <span class="form-icon">📱</span>
+        <input type="tel" placeholder="Số điện thoại">
+      </div>
+      <div class="form-group">
+        <span class="form-icon">🔒</span>
+        <input type="password" placeholder="Mật khẩu">
+        <span class="form-eye">👁</span>
+      </div>
+      <div class="form-group">
+        <span class="form-icon">🔒</span>
+        <input type="password" placeholder="Xác nhận mật khẩu">
+        <span class="form-eye">👁</span>
+      </div>
+
+      <button class="btn-primary">ĐĂNG KÝ</button>
+
+      <div class="auth-switch">
+        Đã có tài khoản? <a href="#" onclick="showPage(2)">Đăng nhập ngay</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 3: LOGIN ===================== -->
+<div class="page" id="page-2">
+  <nav class="navbar">
+    <div class="nav-logo">Shoe<span>Shop</span></div>
+    <div class="nav-icons">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <div class="cart-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <div class="badge">2</div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="auth-layout">
+    <div class="auth-img" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
+      <div style="font-size:120px; filter: drop-shadow(4px 12px 20px rgba(0,0,0,.6))">👟</div>
+    </div>
+    <div class="auth-form-col">
+      <h2>Đăng nhập tài khoản</h2>
+      <p class="subtitle">Chào mừng bạn quay trở lại!</p>
+
+      <div class="form-group">
+        <span class="form-icon">✉️</span>
+        <input type="text" placeholder="Email hoặc số điện thoại">
+      </div>
+      <div class="form-group">
+        <span class="form-icon">🔒</span>
+        <input type="password" placeholder="Mật khẩu">
+        <span class="form-eye">👁</span>
+      </div>
+
+      <div class="remember-row" style="margin-bottom: 16px;">
+        <label><input type="checkbox"> Ghi nhớ đăng nhập</label>
+        <a href="#">Quên mật khẩu?</a>
+      </div>
+
+      <button class="btn-primary">ĐĂNG NHẬP</button>
+
+      <div class="social-divider">Hoặc đăng nhập với</div>
+
+      <div class="social-btns">
+        <button class="btn-social"><span class="google-g">G</span> Google</button>
+        <button class="btn-social"><span class="fb-f">f</span> Facebook</button>
+      </div>
+
+      <div class="auth-switch" style="margin-top: 20px;">
+        Chưa có tài khoản? <a href="#" onclick="showPage(1)">Đăng ký ngay</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 4: ORDER MANAGEMENT ===================== -->
+<div class="page" id="page-3">
+  <nav class="navbar">
+    <div class="nav-logo">Shoe<span>Shop</span></div>
+    <ul class="nav-links">
+      <li><a href="#">Trang chủ</a></li>
+      <li><a href="#">Sản phẩm</a></li>
+      <li><a href="#">Nam</a></li>
+      <li><a href="#">Nữ</a></li>
+      <li><a href="#">Phụ kiện</a></li>
+      <li><a href="#">Khuyến mãi</a></li>
+    </ul>
+    <div class="nav-icons">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <div class="cart-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <div class="badge">2</div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="orders-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-item"><span class="sidebar-icon">👤</span> Thông tin tài khoản</div>
+      <div class="sidebar-item"><span class="sidebar-icon">🔑</span> Đổi mật khẩu</div>
+      <div class="sidebar-item active"><span class="sidebar-icon">📦</span> Đơn hàng của tôi</div>
+      <div class="sidebar-item"><span class="sidebar-icon">📍</span> Địa chỉ của tôi</div>
+      <div class="sidebar-item"><span class="sidebar-icon">❤️</span> Sản phẩm yêu thích</div>
+      <div class="sidebar-item"><span class="sidebar-icon">🚪</span> Đăng xuất</div>
+    </div>
+
+    <!-- Main content -->
+    <div class="orders-main">
+      <h2>ĐƠN HÀNG CỦA TÔI</h2>
+
+      <div class="order-tabs">
+        <div class="order-tab active">Tất cả</div>
+        <div class="order-tab">Chờ xác nhận</div>
+        <div class="order-tab">Đang giao</div>
+        <div class="order-tab">Hoàn thành</div>
+        <div class="order-tab">Đã hủy</div>
+      </div>
+
+      <!-- Order 1 -->
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <span class="order-id">Mã đơn: #DH24051501</span>
+            <span style="margin-left:16px;" class="order-date">Ngày đặt: 15/05/2024</span>
+          </div>
+          <span class="status-badge status-shipping">Đang giao</span>
+        </div>
+        <div class="order-item-row">
+          <div class="order-shoe-img">👟</div>
+          <div class="order-item-info">
+            <div class="order-item-name">Nike Air Force 1 '07</div>
+            <div class="order-item-variant">Trắng / 40</div>
+          </div>
+          <span class="order-item-price">2.490.000đ</span>
+          <span class="order-qty">x1</span>
+          <span class="order-total">2.490.000đ</span>
+          <button class="btn-detail">Xem chi tiết</button>
+        </div>
+      </div>
+
+      <!-- Order 2 -->
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <span class="order-id">Mã đơn: #DH24050588</span>
+            <span style="margin-left:16px;" class="order-date">Ngày đặt: 05/05/2024</span>
+          </div>
+          <span class="status-badge status-done">Hoàn thành</span>
+        </div>
+        <div class="order-item-row">
+          <div class="order-shoe-img">👟</div>
+          <div class="order-item-info">
+            <div class="order-item-name">Adidas Ultraboost 22</div>
+            <div class="order-item-variant">Đen / 41</div>
+          </div>
+          <span class="order-item-price">3.290.000đ</span>
+          <span class="order-qty">x1</span>
+          <span class="order-total">3.290.000đ</span>
+          <button class="btn-detail">Xem chi tiết</button>
+        </div>
+      </div>
+
+      <!-- Order 3 -->
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <span class="order-id">Mã đơn: #DH24042567</span>
+            <span style="margin-left:16px;" class="order-date">Ngày đặt: 25/04/2024</span>
+          </div>
+          <span class="status-badge status-cancel">Đã hủy</span>
+        </div>
+        <div class="order-item-row">
+          <div class="order-shoe-img">👟</div>
+          <div class="order-item-info">
+            <div class="order-item-name">Converse Chuck 70</div>
+            <div class="order-item-variant">Đen / 39</div>
+          </div>
+          <span class="order-item-price">1.690.000đ</span>
+          <span class="order-qty">x1</span>
+          <span class="order-total">1.690.000đ</span>
+          <button class="btn-detail">Xem chi tiết</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPage(idx) {
+    document.querySelectorAll('.page').forEach((p, i) => {
+      p.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === idx);
+    });
+  }
+
+  // Size buttons
+  document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Color dots
+  document.querySelectorAll('.color-dot').forEach(dot => {
+    dot.addEventListener('click', function() {
+      document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Qty buttons
+  const qtyVal = document.querySelector('.qty-val');
+  document.querySelectorAll('.qty-btn').forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      let v = parseInt(qtyVal.textContent);
+      if (i === 0 && v > 1) v--;
+      if (i === 1) v++;
+      qtyVal.textContent = v;
+    });
+  });
+
+  // Order tabs
+  document.querySelectorAll('.order-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Sidebar
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('click', function() {
+      document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
