@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Đăng ký tài khoản – ShoeShop</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #222; min-width: 1280px; }
+  .navbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; background: #fff; border-bottom: 1px solid #e8e8e8; }
+  .nav-logo { font-size: 20px; font-weight: 800; color: #111; }
+  .nav-logo span { color: #1a1aff; }
+  .nav-icons { display: flex; gap: 16px; align-items: center; }
+  .cart-badge { position: relative; }
+  .badge { position: absolute; top: -6px; right: -6px; background: #e53e3e; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .auth-layout { display: flex; min-height: calc(100vh - 57px); }
+  .auth-img {
+    flex: 1;
+    background: linear-gradient(135deg, #dde8f5 0%, #b8cfe8 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .shoe-circle {
+    width: 320px; height: 320px;
+    background: linear-gradient(135deg, #c5d8ed, #a0bdd8);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 100px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.12);
+  }
+  .auth-form-col { width: 440px; padding: 48px; display: flex; flex-direction: column; justify-content: center; border-left: 1px solid #f0f0f0; }
+  .auth-form-col h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; color: #111; }
+  .subtitle { font-size: 13px; color: #888; margin-bottom: 28px; }
+  .form-group { margin-bottom: 14px; position: relative; }
+  .form-group input { width: 100%; padding: 12px 14px 12px 40px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 13px; color: #333; outline: none; background: #fff; }
+  .form-group input::placeholder { color: #c0c0c0; }
+  .form-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #c0c0c0; font-size: 14px; }
+  .form-eye { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: #c0c0c0; cursor: pointer; font-size: 14px; }
+  .btn-primary { width: 100%; padding: 13px; background: #111; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; letter-spacing: .5px; margin-top: 6px; }
+  .auth-switch { text-align: center; font-size: 13px; color: #888; margin-top: 16px; }
+  .auth-switch a { color: #1a1aff; text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-logo">Shoe<span>Shop</span></div>
+  <div class="nav-icons">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <div class="cart-badge">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <div class="badge">2</div>
+    </div>
+  </div>
+</nav>
+
+<div class="auth-layout">
+  <div class="auth-img">
+    <div class="shoe-circle">👟</div>
+  </div>
+  <div class="auth-form-col">
+    <h2>Đăng ký tài khoản</h2>
+    <p class="subtitle">Tạo tài khoản để trải nghiệm mua sắm tốt hơn</p>
+    <div class="form-group">
+      <span class="form-icon">👤</span>
+      <input type="text" placeholder="Họ và tên">
+    </div>
+    <div class="form-group">
+      <span class="form-icon">✉️</span>
+      <input type="email" placeholder="Email">
+    </div>
+    <div class="form-group">
+      <span class="form-icon">📱</span>
+      <input type="tel" placeholder="Số điện thoại">
+    </div>
+    <div class="form-group">
+      <span class="form-icon">🔒</span>
+      <input type="password" placeholder="Mật khẩu">
+      <span class="form-eye">👁</span>
+    </div>
+    <div class="form-group">
+      <span class="form-icon">🔒</span>
+      <input type="password" placeholder="Xác nhận mật khẩu">
+      <span class="form-eye">👁</span>
+    </div>
+    <button class="btn-primary">ĐĂNG KÝ</button>
+    <div class="auth-switch">Đã có tài khoản? <a href="#">Đăng nhập ngay</a></div>
+  </div>
+</div>
+</body>
+</html>
