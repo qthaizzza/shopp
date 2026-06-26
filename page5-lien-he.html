@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Liên hệ – 4TSHOE STORE</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #111; min-width: 1280px; }
+
+  /* NAVBAR */
+  .navbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; background: #fff; border-bottom: 1.5px solid #ebebeb; }
+  .nav-logo { font-size: 20px; font-weight: 800; color: #111; }
+  .nav-logo span { color: #e53e3e; }
+  .nav-links { display: flex; gap: 24px; list-style: none; }
+  .nav-links a { text-decoration: none; color: #444; font-size: 14px; font-weight: 500; }
+  .nav-links a:hover { color: #e53e3e; }
+  .nav-icons { display: flex; gap: 16px; align-items: center; }
+  .cart-badge { position: relative; }
+  .badge { position: absolute; top: -6px; right: -6px; background: #e53e3e; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+  /* HERO */
+  .hero-banner {
+    background: #111;
+    padding: 52px 32px;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-banner::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at center, rgba(229,62,62,0.15) 0%, transparent 70%);
+  }
+  .hero-banner h1 { font-size: 34px; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; position: relative; }
+  .hero-banner h1 span { color: #e53e3e; }
+  .hero-banner p { font-size: 14px; color: rgba(255,255,255,0.6); position: relative; }
+  .breadcrumb-bar { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 12px; position: relative; }
+  .breadcrumb-bar a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  .breadcrumb-bar span { color: #e53e3e; }
+
+  /* LAYOUT */
+  .contact-layout { display: flex; gap: 32px; padding: 48px 48px; max-width: 1200px; margin: 0 auto; }
+
+  /* LEFT */
+  .store-info { width: 360px; flex-shrink: 0; }
+  .store-info h2 { font-size: 20px; font-weight: 800; color: #111; margin-bottom: 4px; }
+  .store-info h2 span { color: #e53e3e; }
+  .store-info .tagline { font-size: 13px; color: #888; margin-bottom: 24px; }
+
+  .info-card { background: #f9f9f9; border: 1.5px solid #ebebeb; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .info-card h3 { font-size: 12px; font-weight: 700; color: #111; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1.5px solid #e8e8e8; }
+
+  .info-row { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+  .info-row:last-child { margin-bottom: 0; }
+  .info-icon { width: 38px; height: 38px; background: #111; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .info-text .info-label { font-size: 11px; color: #aaa; margin-bottom: 3px; text-transform: uppercase; letter-spacing: .3px; }
+  .info-text .info-value { font-size: 14px; font-weight: 600; color: #111; line-height: 1.5; }
+  .info-text .info-value a { color: #e53e3e; text-decoration: none; }
+
+  .hours-list { margin-top: 4px; }
+  .hour-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 1px solid #f0f0f0; }
+  .hour-row:last-child { border-bottom: none; }
+  .hour-day { color: #666; }
+  .hour-time { font-weight: 600; color: #111; }
+  .hour-today .hour-day, .hour-today .hour-time { color: #e53e3e; }
+
+  /* SOCIAL CARD */
+  .social-card { background: #f9f9f9; border: 1.5px solid #ebebeb; border-radius: 12px; padding: 24px; }
+  .social-card h3 { font-size: 12px; font-weight: 700; color: #111; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1.5px solid #e8e8e8; }
+  .btn-social-link { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 10px; margin-bottom: 10px; text-decoration: none; font-size: 14px; font-weight: 600; transition: transform .15s, box-shadow .15s; }
+  .btn-social-link:last-child { margin-bottom: 0; }
+  .btn-social-link:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+  .btn-facebook { background: #1877f2; color: #fff; }
+  .btn-phone { background: #111; color: #fff; }
+  .btn-zalo { background: #fff; color: #111; border: 1.5px solid #e0e0e0; }
+  .social-icon-box { width: 30px; height: 30px; background: rgba(255,255,255,0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+  .btn-zalo .social-icon-box { background: #f0f0f0; color: #0068ff; }
+
+  /* RIGHT: FORM */
+  .contact-form-col { flex: 1; }
+  .contact-form-col h2 { font-size: 20px; font-weight: 800; color: #111; margin-bottom: 4px; }
+  .contact-form-col .tagline { font-size: 13px; color: #888; margin-bottom: 24px; }
+
+  .form-box { background: #fff; border: 1.5px solid #ebebeb; border-radius: 12px; padding: 32px; }
+
+  .topic-label { font-size: 13px; font-weight: 600; color: #111; margin-bottom: 10px; }
+  .topic-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+  .topic-tag { padding: 7px 16px; border: 1.5px solid #e0e0e0; border-radius: 20px; font-size: 12px; cursor: pointer; font-weight: 500; color: #666; transition: all .15s; }
+  .topic-tag:hover { border-color: #111; color: #111; }
+  .topic-tag.active { background: #111; color: #fff; border-color: #111; }
+
+  .form-row { display: flex; gap: 16px; margin-bottom: 16px; }
+  .form-group { flex: 1; margin-bottom: 0; }
+  .form-group label { display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 6px; }
+  .req { color: #e53e3e; }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 13px; color: #222; outline: none; font-family: inherit; background: #fafafa; transition: border .2s, background .2s; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #111; background: #fff; }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: #c0c0c0; }
+  .form-group textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
+  .form-group select { color: #999; }
+
+  .form-note { font-size: 12px; color: #bbb; margin: 12px 0 20px; }
+  .form-note .req { font-size: 12px; }
+
+  .btn-submit { width: 100%; padding: 14px; background: #111; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; letter-spacing: .5px; transition: background .2s; }
+  .btn-submit:hover { background: #e53e3e; }
+
+  /* MAP */
+  .map-section { padding: 0 48px 52px; max-width: 1200px; margin: 0 auto; }
+  .map-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #111; }
+  .map-box { width: 100%; height: 200px; background: #f4f4f4; border-radius: 12px; border: 1.5px solid #e8e8e8; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
+  .map-box .map-pin { font-size: 36px; }
+  .map-box p { font-size: 14px; font-weight: 700; color: #111; }
+  .map-box span { font-size: 12px; color: #888; }
+
+  /* DIVIDER */
+  .section-divider { height: 1px; background: #f0f0f0; margin: 0 48px; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-logo">4TSHOE<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Trang chủ</a></li>
+    <li><a href="#">Sản phẩm</a></li>
+    <li><a href="#">Nam</a></li>
+    <li><a href="#">Nữ</a></li>
+    <li><a href="#">Phụ kiện</a></li>
+    <li><a href="#" style="color:#e53e3e; font-weight:700;">Liên hệ</a></li>
+  </ul>
+  <div class="nav-icons">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <div class="cart-badge">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <div class="badge">2</div>
+    </div>
+  </div>
+</nav>
+
+<div class="hero-banner">
+  <h1>LIÊN HỆ <span>4TSHOE</span> STORE</h1>
+  <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn – đừng ngại liên hệ!</p>
+  <div class="breadcrumb-bar"><a href="#">Trang chủ</a> &rsaquo; <span>Liên hệ</span></div>
+</div>
+
+<div class="contact-layout">
+
+  <!-- LEFT -->
+  <div class="store-info">
+    <h2>4TSHOE <span>STORE</span></h2>
+    <p class="tagline">Chuyên giày chính hãng – Uy tín – Chất lượng</p>
+
+    <div class="info-card">
+      <h3>Thông tin cửa hàng</h3>
+      <div class="info-row">
+        <div class="info-icon">📍</div>
+        <div class="info-text">
+          <div class="info-label">Địa chỉ</div>
+          <div class="info-value">123 Nguyễn Văn Linh,<br>Quận 7, TP. Hồ Chí Minh</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📞</div>
+        <div class="info-text">
+          <div class="info-label">Hotline</div>
+          <div class="info-value"><a href="tel:0901234567">0901 234 567</a></div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">✉️</div>
+        <div class="info-text">
+          <div class="info-label">Email</div>
+          <div class="info-value"><a href="mailto:4tshoe@gmail.com">4tshoe@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🕐</div>
+        <div class="info-text">
+          <div class="info-label">Giờ mở cửa</div>
+          <div class="info-value">
+            <div class="hours-list">
+              <div class="hour-row"><span class="hour-day">Thứ 2 – 6</span><span class="hour-time">8:00 – 21:00</span></div>
+              <div class="hour-row hour-today"><span class="hour-day">Thứ 7 ← Hôm nay</span><span class="hour-time">8:00 – 22:00</span></div>
+              <div class="hour-row"><span class="hour-day">Chủ nhật</span><span class="hour-time">9:00 – 20:00</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="social-card">
+      <h3>Liên hệ trực tiếp</h3>
+      <a href="https://www.facebook.com/nguyen.quoc.thai.527625/" target="_blank" class="btn-social-link btn-facebook">
+        <div class="social-icon-box">f</div> Nhắn tin Facebook
+      </a>
+      <a href="tel:0901234567" class="btn-social-link btn-phone">
+        <div class="social-icon-box">📞</div> Gọi: 0901 234 567
+      </a>
+      <a href="https://zalo.me/0901234567" target="_blank" class="btn-social-link btn-zalo">
+        <div class="social-icon-box">Z</div> Chat Zalo
+      </a>
+    </div>
+  </div>
+
+  <!-- RIGHT: FORM -->
+  <div class="contact-form-col">
+    <h2>Gửi tin nhắn cho chúng tôi</h2>
+    <p class="tagline">Điền thông tin bên dưới, chúng tôi phản hồi trong vòng 24 giờ</p>
+
+    <div class="form-box">
+      <div class="topic-label">Chủ đề <span class="req">*</span></div>
+      <div class="topic-tags">
+        <div class="topic-tag active">Tư vấn sản phẩm</div>
+        <div class="topic-tag">Đổi / Trả hàng</div>
+        <div class="topic-tag">Kiểm tra đơn hàng</div>
+        <div class="topic-tag">Bảo hành</div>
+        <div class="topic-tag">Khác</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Họ và tên <span class="req">*</span></label>
+          <input type="text" placeholder="Nguyễn Văn A">
+        </div>
+        <div class="form-group">
+          <label>Số điện thoại <span class="req">*</span></label>
+          <input type="tel" placeholder="0901 234 567">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="example@email.com">
+        </div>
+        <div class="form-group">
+          <label>Sản phẩm quan tâm</label>
+          <select>
+            <option value="" disabled selected>Chọn danh mục</option>
+            <option>Giày Nam</option>
+            <option>Giày Nữ</option>
+            <option>Giày Trẻ Em</option>
+            <option>Phụ kiện</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:0">
+        <label>Nội dung tin nhắn <span class="req">*</span></label>
+        <textarea placeholder="Bạn cần hỗ trợ gì? Mô tả chi tiết để chúng tôi hỗ trợ tốt hơn..."></textarea>
+      </div>
+
+      <p class="form-note"><span class="req">*</span> Thông tin bắt buộc</p>
+
+      <button class="btn-submit">GỬI TIN NHẮN →</button>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="map-section" style="padding-top:40px;">
+  <h2>Bản đồ cửa hàng</h2>
+  <div class="map-box">
+    <div class="map-pin">📍</div>
+    <p>4TSHOE STORE</p>
+    <span>123 Nguyễn Văn Linh, Quận 7, TP. Hồ Chí Minh</span>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.topic-tag').forEach(tag => {
+    tag.addEventListener('click', function() {
+      document.querySelectorAll('.topic-tag').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
